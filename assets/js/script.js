@@ -157,3 +157,25 @@ for (let i = 0; i < navigationLinks.length; i++) {
 
   });
 }
+
+// Check if returning from course page
+window.addEventListener('DOMContentLoaded', function() {
+  const activePage = sessionStorage.getItem('activePage');
+  if (activePage && pages.length > 0) {
+    for (let i = 0; i < pages.length; i++) {
+      if (pages[i].dataset.page === activePage) {
+        pages[i].classList.add("active");
+        if (navigationLinks[i]) {
+          navigationLinks[i].classList.add("active");
+        }
+        window.scrollTo(0, 0);
+      } else {
+        pages[i].classList.remove("active");
+        if (navigationLinks[i]) {
+          navigationLinks[i].classList.remove("active");
+        }
+      }
+    }
+    sessionStorage.removeItem('activePage');
+  }
+});

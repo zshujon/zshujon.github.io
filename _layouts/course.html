@@ -1,0 +1,103 @@
+---
+layout: course-standalone
+---
+
+<div class="course-container">
+  <!-- Course Sidebar -->
+  <aside class="course-sidebar">
+    <h2 class="course-sidebar-title">{{ page.title }}</h2>
+    <nav class="course-chapters-nav">
+      <ul class="chapters-list">
+        <!-- Overview/Index -->
+        <li class="chapter-item">
+          <a href="#" class="chapter-link active" data-chapter="overview">
+            <ion-icon name="home-outline"></ion-icon>
+            <span>Course Overview</span>
+          </a>
+        </li>
+        
+        <!-- Display chapters from front matter -->
+        {% if page.chapters %}
+          {% for chapter in page.chapters %}
+          <li class="chapter-item">
+            <a href="#" class="chapter-link" data-chapter="{{ chapter.link }}">
+              <ion-icon name="book-outline"></ion-icon>
+              <span>{{ chapter.title }}</span>
+            </a>
+          </li>
+          {% endfor %}
+        {% endif %}
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Course Content Area -->
+  <article class="course-detail">
+    <div id="course-content-area">
+      <header>
+        <h1 class="h1 article-title course-overview-title">Course Overview</h1>
+      </header>
+
+      <div class="course-content">
+        {{ content }}
+      </div>
+    </div>
+  </article>
+</div>
+
+<!-- Course Navigation Script -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const chapterLinks = document.querySelectorAll('.chapter-link');
+  const contentArea = document.getElementById('course-content-area');
+  const overviewContent = contentArea.innerHTML;
+  
+  chapterLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // Remove active class from all links
+      chapterLinks.forEach(l => l.classList.remove('active'));
+      
+      // Add active class to clicked link
+      this.classList.add('active');
+      
+      const chapterUrl = this.getAttribute('data-chapter');
+      
+      // If overview, show original content
+      if (chapterUrl === 'overview') {
+        contentArea.innerHTML = overviewContent;
+        return;
+      }
+      
+      // Show loading state
+      contentArea.innerHTML = '<div class="loading"><ion-icon name="hourglass-outline"></ion-icon><p>Loading chapter...</p></div>';
+      
+      // Fetch chapter content
+      fetch(chapterUrl)
+        .then(response => response.text())
+        .then(html => {
+          // Parse the HTML
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          
+          // Extract the chapter content
+          const chapterContent = doc.querySelector('.chapter-detail');
+          
+          if (chapterContent) {
+            contentArea.innerHTML = chapterContent.innerHTML;
+          } else {
+            contentArea.innerHTML = '<div class="error"><p>Error loading chapter content.</p></div>';
+          }
+          
+          // Scroll to top
+          contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        })
+        .catch(error => {
+          console.error('Error loading chapter:', error);
+          contentArea.innerHTML = '<div class="error"><p>Failed to load chapter. Please try again.</p></div>';
+        });
+    });
+  });
+});
+</script>

@@ -13,6 +13,9 @@ collections:
   portfolio:
     output: true
     permalink: /:collection/:path/
+  courses:
+    output: true
+    permalink: /courses/:path/
 
 # Plugins
 plugins:
