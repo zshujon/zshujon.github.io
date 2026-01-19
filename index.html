@@ -1,0 +1,18 @@
+---
+layout: default
+title: Home
+---
+
+<div class="main-content">
+  <div id="pages">
+    {% include_relative sections/about.html %}
+    {% include_relative sections/education.html %}
+    {% include_relative sections/experiences.html %}
+    {% include_relative sections/portfolio.html %}
+    {% comment %}
+    {% include_relative sections/courses.html %}
+    {% include_relative sections/blog.html %}
+    {% endcomment %}
+    {% include_relative sections/contact.html %}
+  </div>
+</div>

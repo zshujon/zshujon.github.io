@@ -1,2 +1,27 @@
-title: zshujon
+# Site settings
+title: Md. Zakir Hossan
+description: Portfolio and personal website
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://zshujon.github.io" # the base hostname & protocol for your site
+
+# Build settings
 markdown: kramdown
+theme: jekyll-theme-minimal
+
+# Collections
+collections:
+  portfolio:
+    output: true
+    permalink: /:collection/:path/
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Exclude from processing
+exclude:
+  - .gitignore
+  - README.md
+  - Gemfile
+  - Gemfile.lock
